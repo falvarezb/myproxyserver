@@ -1,0 +1,20 @@
+
+terraform {
+
+  cloud {
+    workspaces {
+      name = "tinyproxy"
+    }
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.30.0"
+      configuration_aliases = [ aws.us ]
+    }
+  }
+
+  required_version = "~> 1.6"
+}
+
