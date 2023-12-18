@@ -18,7 +18,7 @@ module "vpc" {
   public_subnets  = ["10.0.1.0/24"]
 
   tags = {
-    Terraform = "true"    
+    Terraform = "true"        
   }
 }
 
@@ -48,6 +48,14 @@ resource "aws_security_group" "tinyproxy" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [var.my_ip]
+  }
+
+  # allow http access to tinyproxy port
+  ingress {
+    from_port   = 9888
+    to_port     = 9888
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -91,14 +99,16 @@ resource "aws_instance" "tinyproxy" {
 
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true  
-
+  
   user_data = data.template_file.cloud_init.rendered
   
   # user_data = <<-EOF
   #   #!/bin/bash
-  #   set -ex
+  #   set -ex    
   #   apt-get update    
   #   apt-get -y install tinyproxy
+  #   touch /var/log/tinyproxy/tinyproxy.log
+  #   chown tinyproxy:tinyproxy /var/log/tinyproxy/tinyproxy.log
   # EOF
 
 

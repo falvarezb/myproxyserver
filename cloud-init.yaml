@@ -27,7 +27,7 @@ write_files:
       # that should you choose to run on a port lower than 1024 you will need
       # to start tinyproxy using root.
       #
-      Port 8888
+      Port 9888
 
       #
       # Listen: If you have multiple interfaces this allows you to bind to
@@ -53,7 +53,7 @@ write_files:
       # Timeout: The maximum number of seconds of inactivity a connection is
       # allowed to have before it is closed by tinyproxy.
       #
-      Timeout 600
+      Timeout 60
 
       #
       # ErrorFile: Defines the HTML file to send when a given HTTP error
@@ -194,7 +194,7 @@ write_files:
       # be created. In other words, only MaxClients number of clients can be
       # connected at the same time.
       #
-      MaxClients 100
+      MaxClients 500
 
       #
       # Allow: Customization of authorization controls. If there are any
@@ -284,8 +284,8 @@ write_files:
       # you will need to allow Cookies through if you access those sites.
       #
       #Anonymous "Host"
-      Anonymous "Authorization"
-      Anonymous "Cookie"
+      #Anonymous "Authorization"
+      #Anonymous "Cookie"
 
       #
       # ConnectPort: This is a list of ports allowed by tinyproxy when the
@@ -334,7 +334,10 @@ write_files:
       #
       #ReverseBaseURL "http://localhost:8888/"
 
-
+runcmd:
+  - touch /var/log/tinyproxy/tinyproxy.log
+  - chown tinyproxy:tinyproxy /var/log/tinyproxy/tinyproxy.log
+  - systemctl restart tinyproxy
 
 
 

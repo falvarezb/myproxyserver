@@ -1,5 +1,3 @@
-# https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
-
 variable "tags_common" {
   default = {
     app = "tinyproxy"
@@ -24,14 +22,14 @@ provider "aws" {
 }
 
 module "tinyproxy_eu_west_1" {
-  source    = "./modules/tinyproxy"
+  source    = "./modules/tinyproxy"  
 
   my_ip = var.my_ip
   ssh_key_name = var.ssh_key_name
 }
 
 module "tinyproxy_us_east_1" {
-  source    = "./modules/tinyproxy"
+  source    = "./modules/tinyproxy"  
 
   my_ip = var.my_ip
   ssh_key_name = var.ssh_key_name
