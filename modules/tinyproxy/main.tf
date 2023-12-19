@@ -39,7 +39,7 @@ resource "aws_security_group" "tinyproxy" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.my_ip]
   }
 
   # allow ssh access from my local IP
@@ -55,7 +55,7 @@ resource "aws_security_group" "tinyproxy" {
     from_port   = 9888
     to_port     = 9888
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.my_ip]
   }
 
   tags = {

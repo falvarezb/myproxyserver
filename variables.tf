@@ -1,11 +1,5 @@
-variable "aws_regions" {
-  type    = list(string)
-  default = ["eu-west-1"]
-  # to set custom values: terraform apply -var="regions=['us-east-1', 'us-west-2']"
-}
-
 variable "my_ip" {
-  description = "my computer's IP"
+  description = "my computer's IP: used to create security group rules to allow ssh and http access to tinyproxy"
   type        = string
   sensitive   = true
 }
