@@ -7,6 +7,6 @@ output "availability_zones" {
 }
 
 output "ubuntu_22_04_ami_id" {
-  value = data.aws_ami.ubuntu_22_04_lts.id
+  value = data.aws_ami.ubuntu_22_04.id
 }
 

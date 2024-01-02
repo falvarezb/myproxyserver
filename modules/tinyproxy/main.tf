@@ -68,7 +68,7 @@ data "template_file" "cloud_init" {
   template = file("cloud-init.yaml")
 }
 
-data "aws_ami" "ubuntu_22_04_lts" {
+data "aws_ami" "ubuntu_22_04" {
   most_recent = true
 
   owners      = ["099720109477"] # Canonical's account ID
@@ -90,7 +90,7 @@ data "aws_ami" "ubuntu_22_04_lts" {
 }
 
 resource "aws_instance" "tinyproxy" {
-  ami           = data.aws_ami.ubuntu_22_04_lts.id
+  ami           = data.aws_ami.ubuntu_22_04.id
   instance_type = "t2.nano"
 
   key_name               = var.ssh_key_name
