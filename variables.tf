@@ -5,7 +5,13 @@ variable "my_ip" {
 }
 
 variable "ssh_key_name" {
-  description = "name of the ssh key to connect to EC2 instances"
+  description = "name of the private key to connect to EC2 instances"
+  type        = string
+  sensitive   = true
+}
+
+variable "private_key" {
+  description = "private key to connect to EC2 instances"
   type        = string
   sensitive   = true
 }

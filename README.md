@@ -9,6 +9,10 @@ runme:
 Terraform configuration to deploy a personal proxy server based on [tinyproxy](http://tinyproxy.github.io)
 
 ```sh {"id":"01HHYQ5EWHQ8YM4CCJ9CD61S31"}
+https://www.rfc-editor.org/rfc/rfc9110#name-introduction
+
+https://www.rfc-editor.org/rfc/rfc1919.html#page-2
+
 https://repost.aws/knowledge-center/ec2-ssh-key-pair-regions
 
 https://citizix.com/how-to-use-terraform-aws-ec2-user_data-aws_instance/#using-shell-script-in-terraform-user_data

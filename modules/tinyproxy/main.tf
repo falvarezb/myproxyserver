@@ -90,7 +90,6 @@ data "aws_ami" "ubuntu_22_04_lts" {
 }
 
 resource "aws_instance" "tinyproxy" {
-  # Ubuntu, 22.04 LTS, amd64: ami-0694d931cee176e7d
   ami           = data.aws_ami.ubuntu_22_04_lts.id
   instance_type = "t2.nano"
 

@@ -137,7 +137,7 @@ write_files:
       # XTinyproxy: Tell Tinyproxy to include the X-Tinyproxy header, which
       # contains the client's IP address.
       #
-      XTinyproxy Yes
+      XTinyproxy No
 
       #
       # Upstream:
@@ -154,7 +154,7 @@ write_files:
       #
       # For example:
       #  # connection to test domain goes through testproxy
-      #  upstream http testproxy:8008 ".test.domain.invalid"
+      upstream http 54.155.191.119:8000 "fjab.com"
       #  upstream http testproxy:8008 ".our_testbed.example.com"
       #  upstream http testproxy:8008 "192.168.128.0/255.255.254.0"
       #
@@ -239,7 +239,7 @@ write_files:
       # header, so by enabling this option, you break compliance.
       # Don't disable the Via header unless you know what you are doing...
       #
-      #DisableViaHeader Yes
+      DisableViaHeader Yes
 
       #
       # Filter: This allows you to specify the location of the filter file.
@@ -283,7 +283,7 @@ write_files:
       # Most sites require cookies to be enabled for them to work correctly, so
       # you will need to allow Cookies through if you access those sites.
       #
-      #Anonymous "Host"
+      Anonymous "Host" # Host is sent anyway, even if not explicitly allowed when using anonymous
       #Anonymous "Authorization"
       #Anonymous "Cookie"
 

@@ -24,3 +24,8 @@ output "availability_zones_us_east_1" {
 output "ubuntu_22_04_ami_id_us_east_1" {
   value = module.tinyproxy_us_east_1.ubuntu_22_04_ami_id
 }
+
+# tinyproxy inspector
+output "tinyproxy_inspector_ip" {
+  value = aws_instance.tinyproxy_inspector.public_ip
+}
