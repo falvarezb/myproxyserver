@@ -1,0 +1,6 @@
+#cloud-config
+runcmd:
+  - python3 /home/ubuntu/httpserver.py &
+
+
+

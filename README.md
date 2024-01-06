@@ -25,5 +25,7 @@ https://ipleak.net
 
 https://www.dnsleaktest.com
 
+https://medium.com/@yespratheesh/mastering-packer-how-to-automate-machine-image-creation-and-improve-infrastructure-management-7724d40bf879
+
 
 ```

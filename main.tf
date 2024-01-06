@@ -42,6 +42,10 @@ module "tinyproxy_us_east_1" {
 # ec2 instance created in the default VPC in eu-west-1 (random AZ and subnet)
 # contains a simple http server that listens on port 8000 to examine requests from tinyproxy
 
+data "template_file" "cloud_init" {
+  #file path is relative to the cwd of the process, not the module
+  template = file("tinyproxy-inspector-cloud-init.yaml")
+}
 resource "aws_security_group" "tinyproxy_inspector" {
   name_prefix = "tinyproxy_inspector-sg-"
 
@@ -74,32 +78,24 @@ resource "aws_security_group" "tinyproxy_inspector" {
   }
 }
 
+/*===Code to fetch the AMI ID from the manifest.auto.tfvars.json ===*/
+resource "null_resource" "ami_id" {
+  triggers = {
+    ami_value = split(":", element(var.builds, 0).artifact_id)[1]
+  }
+}
+
+
 resource "aws_instance" "tinyproxy_inspector" {
   # Ubuntu, 22.04 LTS, amd64: ami-0694d931cee176e7d
-  ami           = "ami-0694d931cee176e7d"
+  ami           = resource.null_resource.ami_id.triggers.ami_value
   instance_type = "t2.nano"
 
   key_name                    = var.ssh_key_name
   vpc_security_group_ids      = [aws_security_group.tinyproxy_inspector.id]
   associate_public_ip_address = true
 
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("${path.root}/${var.ssh_key_name}.pem")
-    host        = self.public_ip
-  }
-
-  provisioner "file" {
-    source      = "httpserver.py"
-    destination = "/home/ubuntu/httpserver.py"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "python3 httpserver.py &",
-    ]
-  }
+  user_data = data.template_file.cloud_init.rendered
 
 
   tags = {
