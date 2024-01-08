@@ -21,6 +21,11 @@ provider "aws" {
   }
 }
 
+provider "hcp" {
+  client_id     = var.hcp_client_id
+  client_secret = var.hcp_client_secret
+}
+
 module "tinyproxy_eu_west_1" {
   source = "./modules/tinyproxy"
 
@@ -79,16 +84,23 @@ resource "aws_security_group" "tinyproxy_inspector" {
 }
 
 /*===Code to fetch the AMI ID from the manifest.auto.tfvars.json ===*/
-resource "null_resource" "ami_id" {
-  triggers = {
-    ami_value = split(":", element(var.builds, 0).artifact_id)[1]
-  }
+# resource "null_resource" "ami_id" {
+#   triggers = {
+#     ami_value = split(":", element(var.builds, 0).artifact_id)[1]
+#   }
+# }
+
+data "hcp_packer_image" "tinyproxy-inspector" {
+  bucket_name     = "tinyproxy-inspector"
+  channel         = "latest"
+  cloud_provider  = "aws"
+  region          = "eu-west-1"
 }
 
-
 resource "aws_instance" "tinyproxy_inspector" {
-  # Ubuntu, 22.04 LTS, amd64: ami-0694d931cee176e7d
-  ami           = resource.null_resource.ami_id.triggers.ami_value
+  # Ubuntu, 22.04
+  # ami           = resource.null_resource.ami_id.triggers.ami_value  
+  ami           = data.hcp_packer_image.tinyproxy-inspector.cloud_image_id
   instance_type = "t2.nano"
 
   key_name                    = var.ssh_key_name

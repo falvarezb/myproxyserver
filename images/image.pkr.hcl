@@ -36,6 +36,23 @@ source "amazon-ebs" "tinyproxy-inspector" {
 
 # a build block invokes sources and runs provisioning steps on them.
 build {
+
+  hcp_packer_registry {
+    bucket_name = "tinyproxy-inspector"
+    description = "Image to create a simple Python HTTP server to inspect the traffic coming out of Tinyproxy"
+
+    bucket_labels = {
+      "owner"          = "fjab76"
+      "os"             = "Ubuntu",
+      "ubuntu-version" = "22.04",
+    }
+
+    build_labels = {
+      "build-time"   = timestamp()
+      "build-source" = basename(path.cwd)
+    }
+  }
+
   sources = ["source.amazon-ebs.tinyproxy-inspector"]
 
   provisioner "file" {
@@ -43,14 +60,14 @@ build {
     destination = "/home/ubuntu/httpserver.py"
   }
 
-  /*==Deletion of manifest file containing old AMI ID==*/  
-  post-processor "shell-local" { 
-      inline = [ "rm -rf manifest.auto.tfvars.json" ]
-    }
- 
- /*==Creation of manifest file containing new AMI ID==*/
+  /*==Deletion of manifest file containing old AMI ID==*/
+  post-processor "shell-local" {
+    inline = ["rm -rf ../manifest.auto.tfvars.json"]
+  }
+
+  /*==Creation of manifest file containing new AMI ID==*/
   post-processor "manifest" {
-    output     = "manifest.auto.tfvars.json"
+    output     = "../manifest.auto.tfvars.json"
     strip_path = true
   }
 }

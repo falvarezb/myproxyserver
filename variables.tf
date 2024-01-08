@@ -10,8 +10,14 @@ variable "ssh_key_name" {
   sensitive   = true
 }
 
-variable "private_key" {
-  description = "private key to connect to EC2 instances"
+variable "hcp_client_id" {
+  description = "client id to connect to HCP registry"
+  type        = string
+  sensitive   = true
+}
+
+variable "hcp_client_secret" {
+  description = "client secret to connect to HCP registry"
   type        = string
   sensitive   = true
 }
