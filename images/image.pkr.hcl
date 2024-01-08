@@ -62,12 +62,12 @@ build {
 
   /*==Deletion of manifest file containing old AMI ID==*/
   post-processor "shell-local" {
-    inline = ["rm -rf ../manifest.auto.tfvars.json"]
+    inline = ["rm -rf ../instances/manifest.auto.tfvars.json"]
   }
 
   /*==Creation of manifest file containing new AMI ID==*/
   post-processor "manifest" {
-    output     = "../manifest.auto.tfvars.json"
+    output     = "../instances/manifest.auto.tfvars.json"
     strip_path = true
   }
 }
