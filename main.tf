@@ -49,7 +49,7 @@ module "tinyproxy_us_east_1" {
 
 data "template_file" "cloud_init" {
   #file path is relative to the cwd of the process, not the module
-  template = file("tinyproxy-inspector-cloud-init.yaml")
+  template = file("inspector-cloud-init.yaml")
 }
 resource "aws_security_group" "tinyproxy_inspector" {
   name_prefix = "tinyproxy_inspector-sg-"

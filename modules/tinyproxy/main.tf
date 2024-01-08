@@ -65,7 +65,7 @@ resource "aws_security_group" "tinyproxy" {
 
 data "template_file" "cloud_init" {
   #file path is relative to the cwd of the process, not the module
-  template = file("cloud-init.yaml")
+  template = file("tinyproxy-cloud-init.yaml")
 }
 
 data "aws_ami" "ubuntu_22_04" {

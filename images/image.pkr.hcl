@@ -56,7 +56,7 @@ build {
   sources = ["source.amazon-ebs.tinyproxy-inspector"]
 
   provisioner "file" {
-    source      = "../httpserver.py"
+    source      = "./httpserver.py"
     destination = "/home/ubuntu/httpserver.py"
   }
 
