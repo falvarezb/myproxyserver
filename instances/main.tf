@@ -92,7 +92,7 @@ resource "aws_security_group" "tinyproxy_inspector" {
 
 data "hcp_packer_image" "tinyproxy-inspector" {
   bucket_name     = "tinyproxy-inspector"
-  channel         = "latest"
+  channel         = "production"
   cloud_provider  = "aws"
   region          = "eu-west-1"
 }
