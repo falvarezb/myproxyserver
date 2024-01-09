@@ -96,6 +96,7 @@ data "template_file" "cloud_init" {
 data "hcp_packer_image" "tinyproxy-inspector" {
   bucket_name     = "tinyproxy-inspector"
   channel         = "production"
+  # iteration_id = "01HKQ6J9SRZ3M89B5JZ3KN1CBK"
   cloud_provider  = "aws"
   region          = "eu-west-1"
 }
@@ -111,6 +112,18 @@ resource "aws_instance" "tinyproxy_inspector" {
   associate_public_ip_address = true
 
   user_data = data.template_file.cloud_init.rendered
+
+  # Check if the AMI has been revoked in Packer regisry
+  # The lifecycle precondition will succeed if revoke_at is scheduled to the future or is null.
+  lifecycle {
+    precondition {
+      condition = try(
+        formatdate("YYYYMMDDhhmmss", data.hcp_packer_image.tinyproxy-inspector.revoke_at) > formatdate("YYYYMMDDhhmmss", timestamp()),
+        data.hcp_packer_image.tinyproxy-inspector.revoke_at == null
+      )
+      error_message = "Source AMI is revoked."
+    }
+  }
 
 
   tags = {
