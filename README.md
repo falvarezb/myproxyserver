@@ -1,10 +1,4 @@
----
-runme:
-  id: 01HH4XYCPNVMYRV4GTBNZKNK0X
-  version: v2.0
----
-
-# myproxyserver
+# My Proxy Server
 
 Terraform configuration to deploy a personal proxy server based on [tinyproxy](http://tinyproxy.github.io)
 
