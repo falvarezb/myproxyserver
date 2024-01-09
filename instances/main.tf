@@ -4,6 +4,8 @@ variable "tags_common" {
   }
 }
 
+# REGIONS TO DEPLOY TINYPROXY SERVER TO
+
 provider "aws" {
   region = "eu-west-1"
 
@@ -19,11 +21,6 @@ provider "aws" {
   default_tags {
     tags = var.tags_common
   }
-}
-
-provider "hcp" {
-  client_id     = var.hcp_client_id
-  client_secret = var.hcp_client_secret
 }
 
 module "tinyproxy_eu_west_1" {
@@ -47,10 +44,6 @@ module "tinyproxy_us_east_1" {
 # ec2 instance created in the default VPC in eu-west-1 (random AZ and subnet)
 # contains a simple http server that listens on port 8000 to examine requests from tinyproxy
 
-data "template_file" "cloud_init" {
-  #file path is relative to the cwd of the process, not the module
-  template = file("inspector-cloud-init.yaml")
-}
 resource "aws_security_group" "tinyproxy_inspector" {
   name_prefix = "tinyproxy_inspector-sg-"
 
@@ -81,6 +74,16 @@ resource "aws_security_group" "tinyproxy_inspector" {
   tags = {
     Name = "tinyproxy_inspector"
   }
+}
+
+provider "hcp" {
+  client_id     = var.hcp_client_id
+  client_secret = var.hcp_client_secret
+}
+
+data "template_file" "cloud_init" {
+  #file path is relative to the cwd of the process, not the module
+  template = file("inspector-cloud-init.yaml")
 }
 
 /*===Code to fetch the AMI ID from the manifest.auto.tfvars.json ===*/

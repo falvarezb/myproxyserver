@@ -14,6 +14,7 @@ module "vpc" {
   name = "tinyproxy"
   cidr = "10.0.0.0/16"
 
+  # select first available zone in the region
   azs             = [data.aws_availability_zones.available.names[0]]
   public_subnets  = ["10.0.1.0/24"]
 
@@ -50,7 +51,7 @@ resource "aws_security_group" "tinyproxy" {
     cidr_blocks = [var.my_ip]
   }
 
-  # allow http access to tinyproxy port
+  # allow http access to tinyproxy port from my local IP
   ingress {
     from_port   = 9888
     to_port     = 9888
