@@ -14,6 +14,13 @@ variable "region" {
 
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
+data "hcp-packer-image" "tinyproxy-inspector" {
+  bucket_name = "tinyproxy-inspector"
+  channel     = "production"
+  # iteration_id = "01HKQ6J9SRZ3M89B5JZ3KN1CBK"
+  cloud_provider = "aws"
+  region         = "eu-west-1"
+}
 
 # source blocks are generated from your builders; a source can be referenced in
 # build blocks. A build block runs provisioners and post-processors on a
@@ -22,15 +29,16 @@ source "amazon-ebs" "tinyproxy-inspector" {
   ami_name      = "tinyproxy-inspector-${local.timestamp}"
   instance_type = "t2.micro"
   region        = var.region
-  source_ami_filter {
-    filters = {
-      name                = "*ubuntu/images/*ubuntu*22.04*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"]
-  }
+  source_ami    = data.hcp-packer-image.tinyproxy-inspector.id
+  // source_ami_filter {
+  //   filters = {
+  //     name                = "*ubuntu/images/*ubuntu*22.04*"
+  //     root-device-type    = "ebs"
+  //     virtualization-type = "hvm"
+  //   }
+  //   most_recent = true
+  //   owners      = ["099720109477"]
+  // }
   ssh_username = "ubuntu"
 }
 
