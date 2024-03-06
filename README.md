@@ -65,7 +65,7 @@ This change may be made:
 
 Terraform and Packer
 
-Packer is used to create the inspector image: the image is created on AWS's eu-west-1 and pushed to HCP registry. Then the image is deployed in the default VPC by Terraform by querying the HCP registry. HCP registry credentials are stored in a separate file, `secrets.tfvars`, not included in the repository.
+Packer is used to create the inspector image (an AMI in AWS): the image is created on AWS's eu-west-1 and pushed to HCP registry. Then the image is deployed in the default VPC by Terraform by querying the HCP registry. HCP registry credentials are stored in a separate file, `secrets.tfvars`, not included in the repository.
 
 On the other hand, the provisioning of the tinyproxy instances is fully done through cloud-init. Each tinyproxy instance is created in its own VPC within the specified region.
 
@@ -83,6 +83,10 @@ The file `secrets.tfvars` is not included in the repository and contains the fol
 ### Environment configuration
 
 Terraform is configured to run on Terraform Cloud and is to be executed from the folder `instances`. Thus, the local environment must be configured to connect to Terraform Cloud. This is done by running `terraform login` and following the instructions.
+
+### Deleting AMIs and associated snapshots
+
+If you create an AMI from an existing instance, once the AMI is created, AWS creates a snapshot of the root storage as well as all the EBS volumes that are attached to the instance. When you deregister the AMI, it is simply deleted. However, all the snapshots that were attached to the AMI remain and need to be deleted manually as they incur a cost. See [details](https://n2ws.com/blog/how-to-guides/how-to-delete-unutilized-ebs-based-amis-and-corresponding-snapshots#:~:text=If%20you%20create%20an%20AMI,AMI%2C%20it%20is%20simply%20deleted.) on how to do it.
 
 ## Other resources
 
